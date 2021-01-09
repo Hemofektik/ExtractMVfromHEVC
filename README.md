@@ -1,2 +1,2 @@
-# ExtractMVfromHEVC
-Extracting motion vectors from HEVC in HM
+# Extracting motion vectors from HEVC using HM
+
