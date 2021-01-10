@@ -13,6 +13,7 @@ echo ">>> Extracting raw HEVC data stream"
 #ffmpeg -y -i ../data/example.mp4 -c:v copy -bsf hevc_mp4toannexb -f hevc ../data/example.h265
 
 echo ">>> Decode the stream"
-#../HM/bin/TAppDecoderStatic --BitstreamFile=../data/example.h265 --ReconFile=../data/example.yuv
+../HM/bin/TAppDecoderStatic --BitstreamFile=../data/example.h265 --ReconFile=../data/example.yuv
 
-ffmpeg -y -f rawvideo -pixel_format yuv420p -video_size 1472x832 -i ../data/example.yuv ../data/example.avi
+echo ">>> Encode the stream"
+ffmpeg -y -f rawvideo -pixel_format yuv420p -video_size 1472x668 -i ../data/example.yuv ../data/example.mkv
