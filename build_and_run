@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+mkdir --parents build
+cd build
+
+echo ">>> Build Customized HEVC Decoder"
+#cmake ../HM
+#make -j8
+
+echo ">>> Extracting raw HEVC data stream"
+#ffmpeg -y -i ../data/example.mp4 -c:v copy -bsf hevc_mp4toannexb -f hevc ../data/example.h265
+
+echo ">>> Decode the stream"
+#../HM/bin/TAppDecoderStatic --BitstreamFile=../data/example.h265 --ReconFile=../data/example.yuv
+
+ffmpeg -y -f rawvideo -pixel_format yuv420p -video_size 1472x832 -i ../data/example.yuv ../data/example.avi
