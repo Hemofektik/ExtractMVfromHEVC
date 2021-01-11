@@ -7,13 +7,14 @@ cd build
 
 echo ">>> Build Customized HEVC Decoder"
 #cmake ../HM
-#make -j8
+cmake ../libde265
+make -j8
 
 echo ">>> Extracting raw HEVC data stream"
 #ffmpeg -y -i ../data/example.mp4 -c:v copy -bsf hevc_mp4toannexb -f hevc ../data/example.h265
 
 echo ">>> Decode the stream"
-../HM/bin/TAppDecoderStatic --BitstreamFile=../data/example.h265 --ReconFile=../data/example.yuv
+../HM/bin/TAppDecoderStatic --BitstreamFile=../data/example.h265 --SkipFrames=0 --ReconFile=../data/example.yuv
 
 echo ">>> Encode the stream"
 ffmpeg -y -f rawvideo -pixel_format yuv420p -video_size 1472x668 -i ../data/example.yuv ../data/example.mkv
