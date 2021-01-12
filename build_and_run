@@ -8,7 +8,7 @@ cd build
 echo ">>> Build Customized HEVC Decoder"
 #cmake ../HM
 #cmake ../libde265
-#make -j8
+make -j8
 
 echo ">>> Extracting raw HEVC data stream"
 #ffmpeg -y -i ../data/example.mp4 -c:v copy -bsf hevc_mp4toannexb -f hevc ../data/example.h265
