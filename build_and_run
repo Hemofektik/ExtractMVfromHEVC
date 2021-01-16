@@ -2,18 +2,14 @@
 
 set -e
 
-mkdir --parents build
-cd build
-
 echo ">>> Build Customized HEVC Decoder"
-#cmake ../HM
-#cmake ../libde265
-make -j8
+make -C libde265 -j12
 
 echo ">>> Extracting raw HEVC data stream"
 #ffmpeg -y -i ../data/example.mp4 -c:v copy -bsf hevc_mp4toannexb -f hevc ../data/example.h265
 
-../build/dec265/dec265 ../data/example.h265
+#../build/dec265/dec265 ../data/example.h265
+./libde265/sherlock265/sherlock265 ./data/example.h265
 
 ## HM related approach
 #echo ">>> Decode the stream"
