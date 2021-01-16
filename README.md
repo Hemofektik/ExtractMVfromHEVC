@@ -5,4 +5,12 @@ Just run
 
 
 ## Requirements
-sudo apt install ffmpeg libvideogfx libsdl-dev libqt4-dev libqtgui4 qt libtool autotools autotools-dev
+```
+sudo apt install ffmpeg libsdl-dev libqt4-dev libqtgui4 libtool autotools-dev
+git clone https://github.com/farindk/libvideogfx
+cd libvideogfx
+./autogen.sh
+./configure
+make -j8
+sudo make install
+```
