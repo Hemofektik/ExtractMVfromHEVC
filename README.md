@@ -5,4 +5,4 @@ Just run
 
 
 ## Requirements
-ffmpeg and libsdl-dev
+sudo apt install ffmpeg libvideogfx libsdl-dev libqt4-dev libqtgui4 qt libtool autotools autotools-dev

@@ -3,7 +3,14 @@
 set -e
 
 echo ">>> Build Customized HEVC Decoder"
+
+#cd libde265
+#./autogen.sh
+#./configure
+#cd ..
+
 make -C libde265 -j12
+sudo make install -C libde265
 
 echo ">>> Extracting raw HEVC data stream"
 #ffmpeg -y -i ../data/example.mp4 -c:v copy -bsf hevc_mp4toannexb -f hevc ../data/example.h265

@@ -203,6 +203,7 @@ enum DrawMode
   IntraPredMode,
   PBPredMode,
   PBMotionVectors,
+  PBMotionColor,
   QuantP_Y
 };
 
@@ -323,6 +324,37 @@ void draw_PB_block(const de265_image *srcimg, uint8_t *img, int stride,
                 x, y, x + mvi.mv[1].x, y + mvi.mv[1].y);
     }
   }
+  else if (what == PBMotionColor)
+  {
+    const PBMotion &mvi = srcimg->get_mv_info(x0, y0);
+
+    uint32_t color = 0x007F7FFF;
+    if (mvi.predFlag[0])
+    {
+      int16_t mx = mvi.mv[0].x + 128;
+      int16_t my = mvi.mv[0].y + 128;
+      uint32_t mx8 = mx < 0 ? 0 : (mx > 255 ? 255 : mx);
+      uint32_t my8 = my < 0 ? 0 : (my > 255 ? 255 : my);
+
+      color = (mx8 << 16) | (my8 << 8) | 0x000000FF;
+    }
+
+    /*if (mvi.predFlag[1])
+    {
+      color = *((uint32_t *)&mvi.mv[1]);
+    }*/
+
+    for (int y = 0; y < h; y++)
+    {
+      for (int x = 0; x < w; x++)
+      {
+        int xp = x0 + x;
+        int yp = y0 + y;
+
+        memcpy(&img[yp * stride + xp * pixelSize], (const void *)&color, pixelSize);
+      }
+    }
+  }
 }
 
 void draw_tree_grid(const de265_image *srcimg, uint8_t *img, int stride,
@@ -362,7 +394,8 @@ void draw_tree_grid(const de265_image *srcimg, uint8_t *img, int stride,
         draw_QuantPY_block(srcimg, img, stride, xb, yb, CbSize, CbSize, pixelSize);
       }
       else if (what == Partitioning_PB ||
-               what == PBMotionVectors)
+               what == PBMotionVectors ||
+               what == PBMotionColor)
       {
         enum PartMode partMode = srcimg->get_PartMode(xb, yb);
 
@@ -479,7 +512,7 @@ LIBDE265_API void draw_Motion(const de265_image *img, uint8_t *dst, int stride, 
 
 LIBDE265_API void draw_MotionCol(const de265_image *img, uint8_t *dst, int stride, int pixelSize)
 {
-  draw_tree_grid(img, dst, stride, 0, pixelSize, PBMotionVectors);
+  draw_tree_grid(img, dst, stride, 0, pixelSize, PBMotionColor);
 }
 
 LIBDE265_API void draw_Slices(const de265_image *img, uint8_t *dst, int stride, int pixelSize)
